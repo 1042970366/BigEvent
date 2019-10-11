@@ -10,12 +10,13 @@
         <img src="https://img.shields.io/badge/技术栈-CSS-green" alt="Vue2.0">
     </a>
     <a href="https://github.com/1042970366/">
-        <img src="https://img.shields.io/badge/技术栈r-JS/JQuery/Ajax-blueviolet" alt="Author">
+        <img src="https://img.shields.io/badge/技术栈-JS/JQuery/Ajax-blueviolet" alt="Author">
     </a>
     <a href="https://github.com/1042970366/">
         <img src="https://img.shields.io/badge/Author-Tmier-blueviolet" alt="Author">
     </a>
 </p>
+
 
 
 
