@@ -1,3 +1,4 @@
+var isLogin = false;
 window.onload = function () {
     /*
         1.结构修改:登录按钮是submit功能,我们需要使用ajax,应当改为普通按钮
@@ -5,7 +6,7 @@ window.onload = function () {
     
     
     */
-    var isLogin = false;
+
 
     $('.input_sub').on('click', login);
 
@@ -23,7 +24,7 @@ window.onload = function () {
         //不为空时发送请求
         $.ajax({
             type: 'post',
-            url: 'http://localhost:8000/admin/login',
+            url: USER_LOGIN,
             data: {
                 user_name: username,
                 password: password,
@@ -33,6 +34,8 @@ window.onload = function () {
                 if (res.code === 200) {
                     alert('登陆成功!~');
                     isLogin = true;
+                    console.log(isLogin);
+
                     location.href = './index.html'
                 } else {
                     alert('同户名或密码输入错误!~\n用户名:admin\n密码为:123456');
@@ -46,6 +49,8 @@ window.onload = function () {
 
 
     }
+
+
     /*     function SureLogin(){
             
             return isLogin;
@@ -56,7 +61,7 @@ window.onload = function () {
     document.addEventListener('keydown', keydown);
 
     function keydown(event) {
-        console.log(event.keyCode);
+        // console.log(event.keyCode);
         if (event.keyCode == 13) {
             login();
         }
