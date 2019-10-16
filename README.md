@@ -103,6 +103,57 @@
 
 
 
+### 2019-10-15
+
+bug:新增分类时出现删除的分类名也无法加入
+
+具体:
+
+![](http://md.hao2.top/img/bug1.gif)
+
+
+
+## 2019-10-16
+
+功能总结
+
+- 分类页面数据的获取和展示
+
+  - 字符串拼接 ES6 || 模板字符串 然后 通过`$('#tbody').html(str);`
+
+- 分类页面数据的新增功能
+
+- 分类数据的编辑功能
+
+  - ```js
+    			var id = $(this).data('id');
+                $('#modal_edit').data('id', id);
+                var $tds = $(this).parents('tr').children();
+                $('#cate_name').val($tds.eq(0).text());
+                $('#cate_slug').val($tds.eq(1).text());
+    ```
+
+    
+
+- 分类数据的删除功能
+
+- 文章列表页面数据获取和展示
+
+- 筛选文章数据
+
+  - ```js
+    		$('#btnSearch').on('click', function (e) {
+                e.preventDefault();//阻止submit提交功能
+                getArticle();
+            });
+    ```
+
+    
+
+
+
+
+
 
 
 ## 待续~
