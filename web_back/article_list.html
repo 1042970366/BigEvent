@@ -280,9 +280,18 @@
     <!-- 引入config.js和article.js -->
     <script src="./tool/config.js"></script>
     <script src="./tool/article.js"></script>
+    <script src="./js/jquery.twbsPagination.js"></script>
+
 
     <!-- 我的代码 -->
     <script>
+        var clickPage = 1; //页面序号
+        // var myTotalPage; 
+        var currentTotalPage; //当前显示页面的所有页数
+
+
+
+
         // 功能1: 页面加载中请求数据生成结构
         getArticle();
         // $.ajax({
@@ -338,21 +347,25 @@
         // - 2.2 给筛选按钮设置点击事件
         $('#btnSearch').on('click', function (e) {
             e.preventDefault();
+            $('.first').click();
             getArticle();
         });
-        
+
         //封装函数
-        function getArticle(){
+        function getArticle() {
             $.ajax({
                 url: 'http://localhost:8000/admin/search',
                 //页面第一次请求时,是进行基本数据获取,无需传入其他参数
-                data:{
-                    type:$('#selCategory').val(),
-                    state:$('#selStatus').val(),
+                data: {
+                    type: $('#selCategory').val(),
+                    state: $('#selStatus').val(),
+                    page: clickPage,
                 },
                 success: function (res) {
 
                     if (res.code === 200) {
+                        // console.log(res);
+
                         var str = '';
                         $.each(res.data, function (i, ele) {
                             str += `
@@ -374,15 +387,47 @@
                         });
                         $('#tbody').html(str);
 
+
+
+
+
+
+
+
+                        var totalPages = res.totalPage; //将服务器响应的totalPage保存
+                        if (totalPages === currentTotalPage) {
+                            //如果服务器响应出的页面总和与当前页面总和一样,则return,不一样的话继续向下走,将服务器响应的页面总和传递给currentTotalPages来生成序号
+                            return;
+                        }
+                        //  - 如果页数不同，将当前的最新页号设置给全局变量currentTotalPage保存
+                        currentTotalPage = totalPages;
+                        //进行分页功能设置
+
+                        $('.pagination').twbsPagination('destroy'); //销毁当前生成的序号结构,在下边重构
+                        $('.pagination').twbsPagination({
+                            totalPages: totalPages, //总页数
+                            visiblePages: 5, //显示的页数
+                            first: '首页',
+                            last: '尾页',
+                            prev: '上一页',
+                            next: '下一页',
+                            onPageClick: function (event, page) {
+                                console.log(page);
+                                console.log(totalPages);
+                                
+                                clickPage = page;
+                                getArticle();
+                                // console.log(1)
+                            },
+
+                        });
+
                     }
 
                 }
 
             });
         }
-    
-    
-    
     </script>
 
 </body>
