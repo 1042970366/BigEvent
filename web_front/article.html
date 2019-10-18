@@ -39,12 +39,12 @@
                 </ul>
             </div>
             <ul class="left_menu fl">
-                <li><a href="#">最 新</a></li>
+                <!-- <li><a href="#">最 新</a></li>
                 <li><a href="#">科 技</a></li>
                 <li><a href="#">股 市</a></li>
                 <li><a href="#">商 品</a></li>
                 <li><a href="#">外 汇</a></li>
-                <li><a href="#">公 司</a></li>
+                <li><a href="#">公 司</a></li> -->
             </ul>
             <ul class="right_menu fr">
                 <li><a href="#">科技专题</a></li>
@@ -204,7 +204,94 @@
         <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
         <p>电话：0755-****888 粤ICP备*******8号</p>
     </div>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="../web_back/js/template-web.js"></script>
 
+    <script type="text/html" id="category">
+        {{each data v}}
+        <li><a href="./list.html?id={{v.id}}">{{v.name}}</a></li>
+        {{/each}}
+    </script>
+    <script>
+        //index.html顶部导航数据获取
+
+
+        axios({
+            method: 'get',
+            url: 'http://localhost:8000/admin/category_search',
+        }).then(function (res) {
+            res = res.data;
+            if (res.code == 200) {
+                var htmlStr = template('category', res);
+                $('.left_menu').html(htmlStr);
+            }
+        })
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        var id = location.search.split('=')[1];
+        if (!id) {
+            location.href = './index.html';
+        }
+       
+
+
+
+
+
+
+
+
+
+        axios({
+            mrthod: 'get',
+            url: 'http://localhost:8000/admin/search',
+            params: {
+                id: id,
+            },
+        }).then(function (res) {
+            
+            res = res.data;
+            
+            if (res.code === 200) {
+                var data = res.data;
+
+                 //将标题切换为当前页面的新闻标题
+                $('title').html(data.title);
+
+
+
+
+
+
+                //文章标题简介内容等数据加载
+                $('.article_title').text(data.title);
+                $('.article_info').text(data.author + ' 发布于 ' + data.date + '   分类: ' + data.type + '   阅读: (' +
+                    data.read + ')   评论: (' + data.comment + ')');
+                $('.article_con').text(data.content);
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form122">
+        <input type="file" name="file">
+        <button type="button" id="btn">普通提交按钮</button>
+
+
+    </form>
+    <form id="form1223">
+        <input type="file" name="file">
+        <button type="button" id="btn">普通提交按钮</button>
+
+
+    </form>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script>
+        $('#btn').on('click',function(){
+            console.log(form122);
+            // var fd = new FormData(form);
+            // console.log(fd.get('file'));
+            
+            // // axios.post('http://localhost:3005/formData/upload',fd)
+            // // .then(function(res){
+            // //     console.log(res.data);
+                
+            // // })
+            // axios({
+            //     method:'post',
+            //     url:'http://localhost:3005/formData/upload',
+            //     data:fd,
+
+
+            // }).then(function(res){
+            //     console.log(res.data);
+                
+            // });
+            
+        })
+
+
+        
+    //    document.querySelector('#btn').click = function(){
+    //         console.log(666);
+            
+           
+    //     }
+    
+    
+    
+    </script>
+</body>
+</html>

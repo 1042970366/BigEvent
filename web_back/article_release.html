@@ -23,28 +23,29 @@
             写文章
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form class="form-horizontal article_form" id="form">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="文章标题">
+                        <input type="text" class="form-control" placeholder="文章标题" name="title" id="title">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <input type="file" id="exampleInputFile">
+                        <input type="file" id="exampleInputFile" name="cover">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select class="form-control" value="" id="type">
+                            <option value="1">科学</option>
+                            <option value="2">八卦</option>
+                            <option value="3">军事</option>
+                            <option value="4">新闻</option>
+                            <option value="5">奇异</option>
+                            <option value="6">我的测试</option>
                         </select>
                     </div>
                 </div>
@@ -53,7 +54,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput">
+                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput" name="date">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -66,20 +67,128 @@
                     <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" id="rich_content" name="content" placeholder="文章内容">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda fugiat illo nihil molestias ab. Laborum eius non atque, totam sapiente quae obcaecati assumenda ratione inventore pariatur maiores, qui libero delectus.
-                            </textarea>
+                            请输入文章内容...
+                        </textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">发布</button>
-                        <button type="submit" class="btn btn-default">存为草稿</button>
+                        <!-- <button type="submit" class="btn btn-success">发布</button>
+                        <button type="submit" class="btn btn-default">存为草稿</button> -->
+                        <!-- <button type="submit" class="btn btn-success">发布</button> -->
+                        <input type="button" value="发布" class="btn btn-success" id="publish">
+                        <input type="button" value="存为草稿" class="btn btn-default" id="draft">
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script>
+        $('#publish').on('click', function () {
+            var fd = new FormData($('form')[0]);
+            // console.log(fd.get('cover'))
+            // console.log(fd.get('title'));
+            // console.log(fd.get('cover'));
 
+
+            // console.log(fd.get('select'));
+            // console.log(fd.get('date'));
+            // console.log(fd.get('content'));
+
+            // console.log(text);
+            var text = tinyMCE.activeEditor.getContent();
+            // var title = $('#title').val();
+            // var date = $('#dateinput').val();
+            // var file = fd.get('cover');
+            // var type = $('#type').val();
+            fd.append('content', text);
+
+            // console.log(title);
+            // console.log(date);
+            // console.log(file);
+            // console.log(type);
+            // console.log(text);
+
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/admin/article_publish',
+                // data: {
+                //     title: title,
+                //     content: text,
+                //     cover: file,
+                //     date: date,
+                //     state: '已发布',
+                //     type: type,
+                // },
+                data: fd
+
+            }).then(function (res) {
+                res = res.data;
+                console.log(res);
+                if (res.code === 201) {
+                    alert('发布成功');
+                    location.href = './index.html';
+                }
+              2 
+
+            }).catch(function (err) {
+                alert('发布失败,请重试~');
+            });
+        });
+        $('#draft').on('click', function () {
+            var fd = new FormData($('form')[0]);
+            // console.log(fd.get('cover'))
+            // console.log(fd.get('title'));
+            // console.log(fd.get('cover'));
+
+
+            // console.log(fd.get('select'));
+            // console.log(fd.get('date'));
+            // console.log(fd.get('content'));
+
+            // console.log(text);
+            var text = tinyMCE.activeEditor.getContent();
+            // var title = $('#title').val();
+            // var date = $('#dateinput').val();
+            // var file = fd.get('cover');
+            // var type = $('#type').val();
+            fd.append('content', text);
+
+            // console.log(title);
+            // console.log(date);
+            // console.log(file);
+            // console.log(type);
+            // console.log(text);
+
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/admin/article_publish',
+                // data: {
+                //     title: title,
+                //     content: text,
+                //     cover: file,
+                //     date: date,
+                //     state: '草稿',
+                //     type: type,
+                // },
+                data: fd,
+
+            }).then(function (res) {
+                res = res.data;
+                console.log(res);
+                if (res.code === 201) {
+                    location.href = './index.html';
+                }
+
+            }).catch(function (err) {
+                alert('保存草稿失败,请重试~');
+            });
+        })
+    </script>
 </body>
 
 </html>

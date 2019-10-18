@@ -324,5 +324,161 @@ bug:新增分类时出现删除的分类名也无法加入
   - 实现文章分类页面分页功能
   - 实现前台页面index.html的新闻标题与图片的获取加载
 
-## 待续~
+### 2019-10-17--plus
+
+- 每个页面生成不一样的标题的方法,实现在前台页面的article.html
+
+  ```js
+  $('title').html(data.title);
+  ```
+
+  > 标题生成:
+  >
+  > ​	原生JS:
+  >
+  > ​        document.getElementsByTagName('title')[0].innerText = '9999999999999';//第一种
+  >
+  > ​        document.title = "aha";//第二种
+  >
+  > ​        //当切换选项卡的时候,可以更换title
+  >
+  > ​        window.onfocus = function () {
+  >
+  > ​            document.title = "鼠标在这儿";
+  >
+  > ​        };
+  >
+  > ​        window.onblur = function () {
+  >
+  > ​            document.title = "滚回来~";
+  >
+  > ​        }
+  >
+  > ​        // JQuery方式
+  >
+  > ​        // $('title').html('')
+  >
+  > ​        // $('title').text('')
+
+
+
+### 2019-10-18
+
+1	关于formdata的数据追加问题
+
+> 在文章发布页面article_release.html中,遇到个问题:单纯用formdata来输出数据,formdata可以保存标题,类型,文件,发布状态等,但却无法获取到tinyMCE编辑器的内容,如果把form中的数据拿出来一个个往data里塞,却无法获取到文件(即便用formdata的get方法获取文件也传不过去-目前不知道为啥,好像是传输文件只能走formdata,单独拿出来白搭~),然后解决方法就是:还是用formdata来存储数据,然后将数据传递给data,在这之前说到formdata无法获取编辑器内容,所以可以将编辑器的内容用appennd()方法将其传入fd`fd.append('content',text),还有类型也一起:`fd.append('type',type)`,这样就解决了~
+
+核心代码:
+
+```js
+ <script>
+        $('#publish').on('click', function () {
+            var fd = new FormData($('form')[0]);
+            // console.log(fd.get('cover'))
+            // console.log(fd.get('title'));
+            // console.log(fd.get('cover'));
+
+
+            // console.log(fd.get('select'));
+            // console.log(fd.get('date'));
+            // console.log(fd.get('content'));
+
+            // console.log(text);
+            var text = tinyMCE.activeEditor.getContent();
+            // var title = $('#title').val();
+            // var date = $('#dateinput').val();
+            // var file = fd.get('cover');
+            // var type = $('#type').val();
+            fd.append('content', text);
+
+            // console.log(title);
+            // console.log(date);
+            // console.log(file);
+            // console.log(type);
+            // console.log(text);
+
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/admin/article_publish',
+                // data: {
+                //     title: title,
+                //     content: text,
+                //     cover: file,
+                //     date: date,
+                //     state: '已发布',
+                //     type: type,
+                // },
+                data: fd
+
+            }).then(function (res) {
+                res = res.data;
+                console.log(res);
+                if (res.code === 201) {
+                    alert('发布成功');
+                }
+                // location.href = './index.html';
+
+            }).catch(function (err) {
+                alert('发布失败,请重试~');
+            });
+        });
+        $('#draft').on('click', function () {
+            var fd = new FormData($('form')[0]);
+            // console.log(fd.get('cover'))
+            // console.log(fd.get('title'));
+            // console.log(fd.get('cover'));
+
+
+            // console.log(fd.get('select'));
+            // console.log(fd.get('date'));
+            // console.log(fd.get('content'));
+
+            // console.log(text);
+            var text = tinyMCE.activeEditor.getContent();
+            // var title = $('#title').val();
+            // var date = $('#dateinput').val();
+            // var file = fd.get('cover');
+            // var type = $('#type').val();
+            fd.append('content', text);
+
+            // console.log(title);
+            // console.log(date);
+            // console.log(file);
+            // console.log(type);
+            // console.log(text);
+
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/admin/article_publish',
+                // data: {
+                //     title: title,
+                //     content: text,
+                //     cover: file,
+                //     date: date,
+                //     state: '草稿',
+                //     type: type,
+                // },
+                data: fd,
+
+            }).then(function (res) {
+                res = res.data;
+                console.log(res);
+                if (res.code === 201) {
+                    location.href = './index.html';
+                }
+
+            }).catch(function (err) {
+                alert('保存草稿失败,请重试~');
+            });
+        })
+    </script>
+```
+
+
+
+时间问题,就写到这儿了,后边的功能都是大同小异的,就这样啦~
+
+## 基本功能完结,无限期待续~
 

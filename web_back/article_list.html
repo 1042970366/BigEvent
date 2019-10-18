@@ -364,7 +364,7 @@
                 success: function (res) {
 
                     if (res.code === 200) {
-                        // console.log(res);
+                        console.log(res);
 
                         var str = '';
                         $.each(res.data, function (i, ele) {
@@ -381,7 +381,7 @@
 
                                 <td class="text-center">
                                     <a href="post-edit.html?id=996" class="btn btn-default btn-xs">编辑</a>
-                                    <a href="javascript:deleteTr( 996 );" class="btn btn-danger btn-xs">删除</a>
+                                    <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
                                 </td>
                             </tr>`;
                         });
@@ -428,6 +428,20 @@
 
             });
         }
+        
+
+
+        //
+        $('.btn-danger').on('click',function(){
+            // if(!confirm('确定删除该条数据?')){
+            //     return;
+            // }
+            alert('666');
+           
+        });
+  
+  
+  
     </script>
 
 </body>

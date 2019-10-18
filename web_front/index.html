@@ -39,13 +39,13 @@
                 </ul>
             </div>
             <ul class="left_menu fl">
-                <li><a href="#">最 新</a></li>
+                <!-- <li><a href="#">最 新</a></li>
                 <li><a href="#">科 技</a></li>
                 <li><a href="#">股 市</a></li>
                 <li><a href="#">商 品</a></li>
                 <li><a href="#">外 汇</a></li>
                 <li><a href="#">公 司</a></li>
-            </ul>
+            </ul> -->
             <ul class="right_menu fr">
                 <li><a href="#">科技专题</a></li>
                 <li><a href="#">财经专题</a></li>
@@ -83,7 +83,7 @@
                 <a href="#" class="more"><i class="fa fa-angle-double-right"></i></a>
             </div>
 
-            <div class="common_news_list">
+            <!-- <div class="common_news_list">
                 <a href="#" class="list_pic"><img src="images/pic09.jpg" alt=""></a>
                 <h4><a href="#">亚马逊金融试水中国？背后却是和华尔街的“金融战争” </a></h4>
                 <p>亚马逊抛弃了中国的买家们，却难以割舍庞大的卖家市场，有消息指出亚马逊中国将针对中国庞大的卖家群体推出一项贷款推荐计划。在连续对印度、墨西哥等新兴市场大力推广线上支付服务后，亚马逊金融试水进军中国市场的信号终于被放出。
@@ -141,7 +141,7 @@
                         )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( 10 )</span>
                     <b>发布于 2018-08-30 12:18:58</b>
                 </div>
-            </div>
+            </div> -->
 
         </div>
         <div class="right_con">
@@ -235,6 +235,27 @@
         </li>
         {{/each}}
     </script>
+    <script type="text/html" id="common_list">
+        {{each data v i}}
+        <div class="common_news_list">
+            <a href="#" class="list_pic"><img src="{{v.cover}}" alt=""></a>
+            <h4><a href="#">{{v.title}}</a></h4>
+            <p>{{v.content}}</p>
+            <div class="new_info">
+                <span>标签：{{v.type}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{v.read}} )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{v.comment}} )</span>
+                <b>发布于 {{v.date}}</b>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script type="text/html" id="category">
+    {{each data v}}
+        <li><a href="./list.html?id={{v.id}}">{{v.name}}</a></li>
+    {{/each}}
+    
+    
+    
+    </script>
 
     <script>
         axios({
@@ -250,8 +271,30 @@
                 var res = res.data;
                 console.log(res);
                 var htmlStr = template('article', res);
+                var comStr = template('common_list',res);
+                console.log(res);
+                
                 $('.focus_list').html(htmlStr);
 
+                $('.left_con').append(comStr);
+
+            });
+
+
+
+
+            //index.html顶部导航数据获取
+
+
+            axios({
+                method:'get',
+                url:'http://localhost:8000/admin/category_search',
+            }).then(function(res){
+                res = res.data;
+                if(res.code==200){
+                    var htmlStr = template('category',res);
+                    $('.left_menu').html(htmlStr);
+                }
             })
     </script>
 </body>

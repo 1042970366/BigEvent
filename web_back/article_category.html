@@ -119,6 +119,8 @@
         article.getCate({
             callback: function (res) {
                 if (res.code === 200) {
+                    console.log(res);
+                    
                     var str = '';
                     $.each(res.data, function (i, ele) {
                         //利用ES6的模板字符串拼接生成
