@@ -316,7 +316,7 @@
 
         //                         <td class="text-center">
         //                             <a href="post-edit.html?id=996" class="btn btn-default btn-xs">编辑</a>
-        //                             <a href="javascript:deleteTr( 996 );" class="btn btn-danger btn-xs">删除</a>
+        //                             <a href="javascript:deleteTr( 996 );" class="btn btn-danger btn-xs" id = "${ele.id}">删除</a>
         //                         </td>
         //                     </tr>`;
         //             });
@@ -380,8 +380,8 @@
 
 
                                 <td class="text-center">
-                                    <a href="post-edit.html?id=996" class="btn btn-default btn-xs">编辑</a>
-                                    <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+                                    <a href="./article_release.html?id=${ele.id}" class="btn btn-default btn-xs">编辑</a>
+                                    <a href="javascript:;" class="btn btn-danger btn-xs" id = "${ele.id}">删除</a>
                                 </td>
                             </tr>`;
                         });
@@ -431,15 +431,29 @@
         
 
 
-        //
-        $('.btn-danger').on('click',function(){
-            // if(!confirm('确定删除该条数据?')){
-            //     return;
-            // }
-            alert('666');
+        //删除按钮功能
+        $('#tbody').on('click','.btn-danger',function(){
+            if(!confirm('确定删除该条数据?')){
+                return;
+            }
+            // alert('666');
+            var id= $(this).prop('id');
+            $.ajax({
+                url:'http://localhost:8000/admin/article_delete',
+                data:{
+                    id:id,
+                },
+                success:function(res){
+                    console.log(res);
+                    
+                    if(res.code===200){
+                        alert('删除成功~');
+                        location.reload();
+                    }
+                }
+            });
            
         });
-  
   
   
     </script>

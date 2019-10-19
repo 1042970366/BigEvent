@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" value="" id="type">
+                        <select class="form-control" value="" id="type" name="type">
                             <option value="1">科学</option>
                             <option value="2">八卦</option>
                             <option value="3">军事</option>
@@ -86,58 +86,7 @@
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/axios.min.js"></script>
     <script>
-        $('#publish').on('click', function () {
-            var fd = new FormData($('form')[0]);
-            // console.log(fd.get('cover'))
-            // console.log(fd.get('title'));
-            // console.log(fd.get('cover'));
-
-
-            // console.log(fd.get('select'));
-            // console.log(fd.get('date'));
-            // console.log(fd.get('content'));
-
-            // console.log(text);
-            var text = tinyMCE.activeEditor.getContent();
-            // var title = $('#title').val();
-            // var date = $('#dateinput').val();
-            // var file = fd.get('cover');
-            // var type = $('#type').val();
-            fd.append('content', text);
-
-            // console.log(title);
-            // console.log(date);
-            // console.log(file);
-            // console.log(type);
-            // console.log(text);
-
-
-            axios({
-                method: 'post',
-                url: 'http://localhost:8000/admin/article_publish',
-                // data: {
-                //     title: title,
-                //     content: text,
-                //     cover: file,
-                //     date: date,
-                //     state: '已发布',
-                //     type: type,
-                // },
-                data: fd
-
-            }).then(function (res) {
-                res = res.data;
-                console.log(res);
-                if (res.code === 201) {
-                    alert('发布成功');
-                    location.href = './index.html';
-                }
-              2 
-
-            }).catch(function (err) {
-                alert('发布失败,请重试~');
-            });
-        });
+        
         $('#draft').on('click', function () {
             var fd = new FormData($('form')[0]);
             // console.log(fd.get('cover'))
@@ -188,6 +137,161 @@
                 alert('保存草稿失败,请重试~');
             });
         })
+    </script>
+    <script>
+        var id = location.search.split('=')[1];
+        if (id) {
+            //如果存在id时,我们可以将按钮变更功能,修改为编辑
+            $('#publish').prop('value','保存修改');
+            //按钮为保存修改功能
+            $('#publish').on('click', function () {
+            var fd = new FormData($('form')[0]);
+            // console.log(fd.get('cover'))
+            // console.log(fd.get('title'));
+            // console.log(fd.get('cover'));
+
+
+            // console.log(fd.get('select'));
+            // console.log(fd.get('date'));
+            // console.log(fd.get('content'));
+
+            // console.log(text);
+            var text = tinyMCE.activeEditor.getContent();
+            var type = fd.get('type');
+            console.log(type);
+            
+            // var title = $('#title').val();
+            // var date = $('#dateinput').val();
+            // var file = fd.get('cover');
+            // var type = $('#type').val();
+            fd.append('content', text);
+            fd.append('id',id)
+            fd.append('type',type);
+
+            // console.log(title);
+            // console.log(date);
+            // console.log(file);
+            // console.log(type);
+            // console.log(text);
+
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/admin/article_edit',
+                // data: {
+                //     title: title,
+                //     content: text,
+                //     cover: file,
+                //     date: date,
+                //     state: '已发布',
+                //     type: type,
+                // },
+                data: fd
+
+            }).then(function (res) {
+                res = res.data;
+                console.log(res);
+                if (res.code === 201) {
+                    alert('修改成功');
+                    parent.location.href = './index.html';
+                }
+                2
+
+            }).catch(function (err) {
+                alert('发布失败,请重试~');
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $.ajax({
+                url: 'http://localhost:8000/admin/search',
+                data: {
+                    id: id,
+                },
+                success: function (res) {
+                    if (res.code == 200) {
+                        var data = res.data;
+                        // var title = $('#title').val();
+                        // var date = $('#dateinput').val();
+                        // var file = fd.get('cover');
+                        // var type = $('#type').val();
+                        $('#title').val(data.title);
+                        $('#dateinput').val(data.date);
+                        $('#type').val(data.type);
+                        // $('#content').val(data.content);
+                        $('#rich_content').text(data.content);
+
+                        console.log(data);
+                        
+                        // $('#title').val(data.title);
+                    }
+                }
+            });
+        }else{//id不存在时,把按钮保存为发布,功能为发布功能
+            $('#publish').on('click', function () {
+            var fd = new FormData($('form')[0]);
+            // console.log(fd.get('cover'))
+            // console.log(fd.get('title'));
+            // console.log(fd.get('cover'));
+
+
+            // console.log(fd.get('select'));
+            // console.log(fd.get('date'));
+            // console.log(fd.get('content'));
+
+            // console.log(text);
+            var text = tinyMCE.activeEditor.getContent();
+            // var title = $('#title').val();
+            // var date = $('#dateinput').val();
+            // var file = fd.get('cover');
+            // var type = $('#type').val();
+            fd.append('content', text);
+
+            // console.log(title);
+            // console.log(date);
+            // console.log(file);
+            // console.log(type);
+            // console.log(text);
+
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8000/admin/article_publish',
+                // data: {
+                //     title: title,
+                //     content: text,
+                //     cover: file,
+                //     date: date,
+                //     state: '已发布',
+                //     type: type,
+                // },
+                data: fd
+
+            }).then(function (res) {
+                res = res.data;
+                console.log(res);
+                if (res.code === 201) {
+                    alert('发布成功');
+                    parent.location.href = './index.html';
+                }
+                2
+
+            }).catch(function (err) {
+                alert('发布失败,请重试~');
+            });
+        });
+        };
     </script>
 </body>
 
